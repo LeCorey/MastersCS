@@ -1,57 +1,63 @@
 //
 //  main.cpp
-//  Homework 6
-//
-//  Created by LeCorey Johnson on 5/3/23.
-//
-
+//  HW4
+// Chapter 5, Programming Challenge 25: Using Files-Student Line Up
 #include <iostream>
 #include <string>
+#include <fstream>
+using namespace std;
 
-int main() {
-    const int numMonths = 12;
-    std::string months[numMonths] = {"January", "February", "March", "April", "May", "June",
-                                     "July", "August", "September", "October", "November", "December"};
-    double rainfall[numMonths];
-    double totalRainfall = 0.0;
-    double averageRainfall;
-    double maxRainfall = 0.0;
-    double minRainfall = std::numeric_limits<double>::max();
-    std::string monthWithMaxRainfall, monthWithMinRainfall;
+int main()
+{
+    string name;        // To hold a student's name
+    string front;        // To hold the least alphabetic value
+    string back;        // To hold the greatest alphabetic value
+    ifstream inFile;    // To hold the input file
 
-    // Input validation loop
-    for (int i = 0; i < numMonths; ++i) {
-        bool validInput = false;
-        while (!validInput) {
-            std::cout << "Enter rainfall for " << months[i] << ": ";
-            if (std::cin >> rainfall[i] && rainfall[i] >= 0) {
-                validInput = true;
-            } else {
-                std::cout << "Invalid input. Rainfall cannot be negative. Please try again." << std::endl;
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            }
+    // Open the file.
+    inFile.open("LineUp.txt");
+    if (!inFile) {
+        cout << "File not found!";
+    }
+    else {
+        // Read the first student's name from the file.
+        inFile >> name;
+
+        // Set front and back equal to the first student's name.
+        front = name;
+        back = name;
+
+        // Read the remaining student's names from the file.
+        while (inFile >> name)
+        {
+            
+
+            // Determine if this name is least.
+            if (name < front)
+                front = name;
+
+            // Determine if this name is the greatest.
+            if (name > back)
+                back = name;
         }
 
-        totalRainfall += rainfall[i];
+        // Close the file.
+        inFile.close();
 
-        if (rainfall[i] > maxRainfall) {
-            maxRainfall = rainfall[i];
-            monthWithMaxRainfall = months[i];
-        }
+        // Display the name of the student who is in the
+        // front of the line.
+        cout << front << " is in the front.\n";
 
-        if (rainfall[i] < minRainfall) {
-            minRainfall = rainfall[i];
-            monthWithMinRainfall = months[i];
-        }
+        // Display the name of the student who is in the
+        // back of the line.
+        cout << back << " is in the back.\n\n";
+
+
+
+
     }
 
-    averageRainfall = totalRainfall / numMonths;
 
-    std::cout << "Total rainfall: " << totalRainfall << std::endl;
-    std::cout << "Average rainfall: " << averageRainfall << std::endl;
-    std::cout << "Least rainfall in: " << monthWithMinRainfall << std::endl;
-    std::cout << "Most rainfall in: " << monthWithMaxRainfall << std::endl;
 
     return 0;
 }
