@@ -1,36 +1,57 @@
 //
 //  main.cpp
-//  Homework 7
+//  Homework 6
+//
+//  Created by LeCorey Johnson on 5/3/23.
+//
 
 #include <iostream>
-#include <vector>
+#include <string>
 
 int main() {
+    const int numMonths = 12;
+    std::string months[numMonths] = {"January", "February", "March", "April", "May", "June",
+                                     "July", "August", "September", "October", "November", "December"};
+    double rainfall[numMonths];
+    double totalRainfall = 0.0;
+    double averageRainfall;
+    double maxRainfall = 0.0;
+    double minRainfall = std::numeric_limits<double>::max();
+    std::string monthWithMaxRainfall, monthWithMinRainfall;
 
-    std::vector<int> luckyNumbers = {13579, 26791, 26792, 33445, 55555, 62483, 77777, 79422, 85647, 93121};
-    
-    int winningNumber;
-    std::cout << "Enter this week's 5-digit winning lottery numbers: ";
-    std::cin >> winningNumber;
-    
-    bool isWinner = false;
-    int i = 0;
-    while (i < luckyNumbers.size()) {
-        if (luckyNumbers[i] == winningNumber) {
-            isWinner = true;
-            break;
+    // Input validation loop
+    for (int i = 0; i < numMonths; ++i) {
+        bool validInput = false;
+        while (!validInput) {
+            std::cout << "Enter rainfall for " << months[i] << ": ";
+            if (std::cin >> rainfall[i] && rainfall[i] >= 0) {
+                validInput = true;
+            } else {
+                std::cout << "Invalid input. Rainfall cannot be negative. Please try again." << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
         }
-        i++;
+
+        totalRainfall += rainfall[i];
+
+        if (rainfall[i] > maxRainfall) {
+            maxRainfall = rainfall[i];
+            monthWithMaxRainfall = months[i];
+        }
+
+        if (rainfall[i] < minRainfall) {
+            minRainfall = rainfall[i];
+            monthWithMinRainfall = months[i];
+        }
     }
-    
-    if (isWinner) {
-        std::cout << "WINNER!! BIG MONEY$$$$$$" << std::endl;
-    } else {
-        std::cout << "You did not win this week." << std::endl;
-    }
-    
+
+    averageRainfall = totalRainfall / numMonths;
+
+    std::cout << "Total rainfall: " << totalRainfall << std::endl;
+    std::cout << "Average rainfall: " << averageRainfall << std::endl;
+    std::cout << "Least rainfall in: " << monthWithMinRainfall << std::endl;
+    std::cout << "Most rainfall in: " << monthWithMaxRainfall << std::endl;
+
     return 0;
 }
-
-    
-
